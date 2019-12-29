@@ -47,7 +47,7 @@ mongoose.connect('mongodb+srv://Azeem:root@cluster0-7i4yw.mongodb.net/shop?retry
                 user.save();
             }
         });
-        app.listen(3000);
+        app.listen(process.env.PORT);
     }).catch(err => console.log(err));
 
 
