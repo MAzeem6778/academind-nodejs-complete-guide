@@ -33,7 +33,7 @@ app.use(shopRoutes);
 app.use(errorController.get404);
 
 
-mongoose.connect('mongodb+srv://Azeem:root@cluster0-7i4yw.mongodb.net/shop?retryWrites=true&w=majority', {useUnifiedTopology: true})
+mongoose.connect('mongodb+srv://Azeem:root@cluster0-7i4yw.mongodb.net/shop?retryWrites=true&w=majority', {useUnifiedTopology: true, useNewUrlParser: true})
     .then(result => {
         User.findOne().then(user=>{
             if(!user){
