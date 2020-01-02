@@ -2,20 +2,30 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 
 exports.getLogin = (req, res , next)=>{
-    //const isLoggedIn= req.get('Cookie').split(';')[1].trim().split('=')[1]=== 'true';
-    console.log(req.session.isLoggedIn);
+    let message = req.flash('error');
+    if(message.length>0){
+        message = message[0];
+    }else{
+        message = null;
+    }
     res.render('auth/login',{
        path: '/login',
         pageTitle: 'Login',
-        isAuthenticated : false
+        errorMessage: message
     });
 };
 
 exports.getSignup = (req , res, next)=>{
+    let message = req.flash('error');
+    if(message.length>0){
+        message = message[0];
+    }else{
+        message = null;
+    }
     res.render('auth/signup',{
         path: 'signup',
         pageTitle: 'Signup',
-        isAuthenticated: false
+        errorMessage: message
     });
 };
 
@@ -25,6 +35,7 @@ exports.postLogin = (req , res , next)=>{
     User.findOne({email:email})
         .then(user => {
             if(!user){
+                req.flash('error','Invalid email!');
                 return res.redirect('/login');
             }
             bcrypt.compare(password, user.password)
@@ -34,10 +45,11 @@ exports.postLogin = (req , res , next)=>{
                         req.session.user = user;
 
                         return req.session.save(err=>{
-                            console.log('it is on line 37 in controllers-auth :', err);
+                            console.log('it is on line 43 in controllers-auth :', err);
                             res.redirect('/');
                         });
                     }
+                    req.flash('error','Invalid Password!');
                     res.redirect('/login');
                 })
                 .catch(err=> {
@@ -52,9 +64,16 @@ exports.postSignup = (req, res, next)=>{
     const email = req.body.email;
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
+
+    if(password !== confirmPassword){
+        req.flash('error', 'Password don"t match');
+        return res.redirect('/signup');
+    }
+
     User.findOne({email:email})
         .then(userDoc=>{
             if(userDoc){
+                req.flash('error', 'E-mail already Exists!, please pick a different One!');
                 return res.redirect('/signup');
             }
             return bcrypt.hash(password,12)
