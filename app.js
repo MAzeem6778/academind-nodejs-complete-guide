@@ -53,6 +53,8 @@ app.use((req, res, next) => {
 
 app.use((req , res, next)=>{
     res.locals.isAuthenticated = req.session.isLoggedIn;
+    if(req.session.isLoggedIn)
+        res.locals.userName = req.session.user.name;
     res.locals.csrfToken = req.csrfToken();
     next();
 });
@@ -65,10 +67,16 @@ app.use(errorController.get404);
 
 mongoose.connect(MONGODB_URI, {useUnifiedTopology: true, useNewUrlParser: true})
     .then(result => {
+        console.log(`MongoDB Connected ${result}`);
         app.listen(port, ()=>{
             console.log(`Server is running on ${port}`);
         });
     }).catch(err => console.log(err));
+
+
+// mongoConnect( ()=>{
+//    app.listen(3000);
+// });
 
 // SESSION LINK BELLOW
 //https://machinesaredigging.com/2013/10/29/how-does-a-web-session-work/
