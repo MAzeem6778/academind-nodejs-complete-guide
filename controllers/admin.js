@@ -16,13 +16,13 @@ exports.getAddProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
     const title = req.body.title;
-    const imageUrl = req.body.imageUrl;
+    const imageUrl = req.file;
     const price = req.body.price;
     const description = req.body.description;
-
+    console.log(imageUrl);
     const errors = validationResult(req);
-
     if(!errors.isEmpty()){
+        // console.log('there: ',errors.array());
         return res.status(422).render('admin/edit-product',{
             pageTitle: 'Add Product',
             path: '/admin/add-product',
@@ -52,7 +52,8 @@ exports.postAddProduct = (req, res, next) => {
             res.redirect('/admin/products');
         })
 .catch(err => {
-        console.log(err);
+        console.log('checking error in catch field!');
+        // console.log(err);
         const error = new Error(err);
         error.httpStatusCode = 500;
         return next(error);
@@ -114,7 +115,7 @@ exports.postEditProduct = (req, res, next) => {
     const errors = validationResult(req);
 
     if(!errors.isEmpty()){
-        console.log('ErrorList on 105 : ',errors.array());
+        console.log('ErrorList on 117 : ',errors.array());
         return res.status(422).render('admin/edit-product',{
             pageTitle: 'Edit Product',
             path: '/admin/edit-product',
@@ -148,7 +149,7 @@ exports.postEditProduct = (req, res, next) => {
                 });
         })
         .catch(err => {
-            console.log(err);
+            console.log('Checking this error: ',err);
             const error = new Error(err);
             error.httpStatusCode = 500;
             return next(error);

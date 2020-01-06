@@ -90,9 +90,10 @@ exports.postLogin = (req , res , next) => {
                     if(doMatch){
                         req.session.isLoggedIn = true;
                         req.session.user = user;
-
+                        console.log(req.session.user);
+                        console.log(req.session.isLoggedIn);
                         return req.session.save(err=>{
-                            console.log('it is on line 60 in controllers-auth :', err);
+                            console.log('it is on line 95 in controllers-auth :', err);
                             res.redirect('/');
                         });
                     }
@@ -112,7 +113,7 @@ exports.postLogin = (req , res , next) => {
                     res.redirect('/login');
                 });
         })
-        .catch(err => console.log('this is from 119 line in controlers-auth error :',err));
+        .catch(err => console.log('this is from 115 line in controlers-auth error :',err));
 };
 
 exports.postSignup = (req, res, next) => {
