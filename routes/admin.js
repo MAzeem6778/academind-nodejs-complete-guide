@@ -28,7 +28,7 @@ router.post('/add-product',
 // /admin/products =>GET
 router.get('/products', isAuth, adminController.getProducts);
 //
-router.post('/delete-product', isAuth, adminController.postDeleteProduct);
+router.delete('/product/:productId', isAuth, adminController.deleteProduct);
 //
 router.get('/edit-product/:productId', isAuth, adminController.getEditProduct);
 //

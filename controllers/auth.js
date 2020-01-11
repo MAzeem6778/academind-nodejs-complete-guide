@@ -90,8 +90,8 @@ exports.postLogin = (req , res , next) => {
                     if(doMatch){
                         req.session.isLoggedIn = true;
                         req.session.user = user;
-                        console.log(req.session.user);
-                        console.log(req.session.isLoggedIn);
+                        // console.log(req.session.user);
+                        // console.log(req.session.isLoggedIn);
                         return req.session.save(err=>{
                             console.log('it is on line 95 in controllers-auth :', err);
                             res.redirect('/');
